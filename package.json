@@ -6,7 +6,9 @@
 	"main": "src/index.js",
 	"scripts": {
 		"test": "echo \"Error: no test specified\" && exit 1",
-		"start": "nodemon --inspect src/index.js"
+		"start": "nodemon --inspect src/index.js",
+		"watch":"node-sass --watch src/resources/scss/app.scss src/public/css/app.css",
+		"dev": "nodemon --inspect src/index.js & node-sass --watch src/resources/scss/app.scss src/public/css/app.css"
 	},
 	"author": "",
 	"license": "ISC",
@@ -16,14 +18,10 @@
 	},
 	"devDependencies": {
 		"morgan": "^1.10.0",
+		"node-sass": "^6.0.1",
 		"nodemon": "^2.0.15"
 	},
 	"nodemonConfig": {
-		"ext": [
-			"js",
-			"mjs",
-			"json",
-			"hbs"
-		]
+		"ext": "js mjs json hbs css"
 	}
 }
