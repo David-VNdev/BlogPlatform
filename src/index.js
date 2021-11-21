@@ -3,10 +3,13 @@ import morgan from "morgan"; //logger
 import path, { dirname } from "path";
 import { fileURLToPath } from "url";
 import route from "./routes/index.js";
-
 import { engine, create } from "express-handlebars";
+import db from "./config/db/index.js";
 const app = express();
 const port = 3000;
+
+// Connect to db
+db.connect();
 
 // Middlewares
 // Static
@@ -27,5 +30,5 @@ app.set("view engine", "hbs");
 // Routes
 route(app);
 app.listen(3000, () => {
-  console.log(`Blog app is listening at http://localhost:${port}`);
+  console.log(`Node module is listening at http://localhost:${port}`);
 });
