@@ -3,3 +3,8 @@
   width: 28px;
   margin-right: 4px;
   border-radius: 50%; }
+
+.bulk-option {
+  display: inline-block;
+  max-width: 150px;
+  margin-right: 10px; }
