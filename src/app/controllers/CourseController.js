@@ -29,7 +29,7 @@ class CourseController {
 			},
 			next
 		);
-		res.redirect('/');
+		res.redirect('/me/stored/courses');
 	}
 
 	// [GET] /courses/:id/edit
@@ -53,11 +53,20 @@ class CourseController {
 			.catch(next);
 	}
 
+	// [PATCH] /courses/:id/restore
+	restore(req, res, next) {
+		Course.restore({ _id: req.params.id }).then(() => res.redirect('back'));
+	}
+
 	// [DELETE] /courses/:id
 	destroy(req, res, next) {
-		Course.findOneAndDelete({ _id: req.params.id }).then(() =>
-			res.redirect(`back`)
-		);
+		Course.deleteById(req.params.id).then(() => res.redirect(`back`));
+	}
+
+	// [DELETE] /courses/:id/hard
+	hardDestroy(req, res, next) {
+		console.log('hard delete');
+		Course.deleteOne({_id:req.params.id}).then(() => res.redirect(`back`));
 	}
 }
 export default new CourseController();
