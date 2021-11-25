@@ -1,0 +1,108 @@
+<div class='mt-4'>
+	<div>
+		<h3>
+			Deleted courses
+
+		</h3>
+		<p><a href='/me/stored/courses'>Back to course management</a></p>
+	</div>
+
+	<table class='table mt-4'>
+
+		<thead class='thead-dark'>
+			<tr>
+				<th scope='col'>#</th>
+				<th scope='col'>Course name</th>
+				<th scope='col'>Description</th>
+				<th scope='col'>Deleted At</th>
+				<th scope='col'></th>
+				<th scope='col'></th>
+			</tr>
+		</thead>
+		<tbody>
+
+			{{#each courses}}
+				<tr>
+					<th scope='row'>{{sum @index 1}}</th>
+					<td>{{this.name}}</td>
+					<td>{{this.description}}</td>
+					<td>{{this.deletedAt}}</td>
+					<td>
+						<a data-id='{{this._id}}' class='btn btn-primary btn-restore'>Restore</a>
+
+					</td>
+					<td>
+						<a
+							type='button'
+							class='btn btn-warning'
+							data-toggle='modal'
+							data-target='#deleteModal'
+							data-id='{{this._id}}'
+						>Delete Permanenetly</a>
+					</td>
+				</tr>
+			{{else}}
+				<tr>
+					<td class='text-center' colspan='6'>Trash is empty</td>
+				</tr>
+			{{/each}}
+
+		</tbody>
+	</table>
+
+</div>
+
+<!-- Modal to confirm delete course -->
+<div
+	class='modal fade'
+	id='deleteModal'
+	tabindex='-1'
+	role='dialog'
+	aria-labelledby='deleteModalLabel'
+	aria-hidden='true'
+>
+	<div class='modal-dialog modal-dialog-centered' role='document'>
+		<div class='modal-content'>
+			<div class='modal-header'>
+				<h5 class='modal-title' id='deleteModalLabel'>Are you sure?</h5>
+				<button type='button' class='close' data-dismiss='modal' aria-label='Close'>
+					<span aria-hidden='true'>&times;</span>
+				</button>
+			</div>
+			<div class='modal-body'>
+				Do you really want to delete the course? This action cannot be undone.
+			</div>
+			<div class='modal-footer'>
+				<a type='button' class='btn btn-danger' id='btn-delete-confirm'>DELETE</a>
+				<button type='button' class='btn btn-secondary' data-dismiss='modal'>CANCEL</button>
+
+			</div>
+		</div>
+	</div>
+</div>
+
+{{! Hidden form to confirm delete course }}
+<form name='deleteForm' method='POST' action='/courses/{{course._id}}?_method=DELETE'></form>
+<form
+	name='restoreForm'
+	method='POST'
+	action='/courses/{{course._id}}/restore?_method=PATCH'
+></form>
+
+<script>
+	document.addEventListener('DOMContentLoaded', function(){ const restoreBtns = $('.btn-restore');
+	console.log(restoreBtns) ; restoreBtns.click(function(e){ e.preventDefault(); const restoreId =
+	$(this).data('id'); restoreForm = document.forms['restoreForm']; restoreForm.action =
+	'/courses/' + restoreId + '/restore?_method=PATCH'; restoreForm.submit(); }) })
+
+		var courseId; var deleteForm = document.forms['deleteForm'];
+	document.addEventListener('DOMContentLoaded', function() { $('#deleteModal').on('show.bs.modal',
+	function (event) { var button = $(event.relatedTarget) 
+	courseId = button.data('id')
+	$('#btn-delete-confirm').click(function() { 
+		console.log(courseId)
+		deleteForm.action = `/courses/${courseId}/hard?_method=DELETE` 
+		deleteForm.submit(); 
+		
+		}) }) })
+</script>
