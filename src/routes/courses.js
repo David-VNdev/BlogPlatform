@@ -3,6 +3,8 @@ const router = express.Router();
 
 import CourseController from "../app/controllers/CourseController.js";
 
+
+router.post("/handle-form-actions", CourseController.handleFormActions);
 router.patch("/:id/restore", CourseController.restore);
 router.get("/create", CourseController.create);
 router.post("/store", CourseController.store);

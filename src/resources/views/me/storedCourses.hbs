@@ -1,4 +1,4 @@
-<div class='mt-4'>
+<form name='bulk-form' method='POST' class='mt-4' action='/courses/handle-form-actions'>
 	<div>
 		<h3>
 			Course management
@@ -14,12 +14,12 @@
 			</label>
 		</div>
 
-		<select class='form-control form-control-sm bulk-option ml-4' id=''>
-			<option class='disabled'> -- Action</option>
-			<option>action 1</option>
-			<option>action 2</option>
+		<select class='form-control form-control-sm bulk-option ml-4' name = 'action'>
+			<option disabled> -- Action</option>
+			<option value="delete">Delete</option>
+		
 		</select>
-		<button class='btn btn-primary btn-sm btn-submit disabled'>Apply</button>
+		<button type='submit' class='btn btn-primary btn-sm btn-submit disabled'>Apply</button>
 	</div>
 
 	<table class='table mt-4'>
@@ -73,7 +73,7 @@
 
 		</tbody>
 	</table>
-</div>
+</form>
 <!-- Modal to confirm delete course -->
 <div class='modal fade' id='deleteModal' tabindex='-1' role='dialog' aria-labelledby='deleteModalLabel' aria-hidden='true'>
 	<div class='modal-dialog modal-dialog-centered' role='document'>
@@ -118,17 +118,35 @@
 		$('#checkbox-all').change(function () {
 			var isAllChecked = $(this).is(':checked');
 			itemCheckBoxes.prop('checked', isAllChecked);
-
+			isAllChecked ? $('.btn-submit').removeClass('disabled') : $('.btn-submit').addClass('disabled');
 		})
+
 		itemCheckBoxes.change(function () {
 			var isAllChecked = itemCheckBoxes.length == itemCheckBoxes.filter(':checked').length;
 			$('#checkbox-all').prop('checked', isAllChecked);
-			if(itemCheckBoxes.filter(':checked').length > 0 ){
-				$('.btn-submit').removeAttr('disabled');}
-			else{
-				$('.btn-submit').attr('disabled',true);}
-			})
 
+			if (itemCheckBoxes.filter(':checked').length > 0) {
+				$('.btn-submit').removeClass('disabled');
+			}
+			else {
+				$('.btn-submit').addClass('disabled');
+			}
+
+		})
+
+		//Apply button
+		$('.btn-submit').click(function (e) {
+			e.preventDefault();
+			var selectedItems = itemCheckBoxes.filter(':checked');
+			if (selectedItems.length == 0) return
+			var selectedItemsIds = [];
+			selectedItems.each(function () {
+				selectedItemsIds.push($(this).val());
+			});
+			console.log(selectedItemsIds);
+			var bulkForm = document.forms['bulk-form'];
+			bulkForm.submit();
+		});
 	}
 	)
 

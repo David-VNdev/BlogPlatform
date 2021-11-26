@@ -32,6 +32,20 @@ class CourseController {
 		res.redirect('/me/stored/courses');
 	}
 
+	// [POST] /courses/handle-form-actions
+	handleFormActions(req, res, next) {
+		switch (req.body.action) {
+			case 'delete':
+				Course.delete({ _id: { $in: req.body.courseIds } })
+					.then(() => res.redirect('back'))
+					.catch(next);
+
+				break;
+			default:
+				res.json({ error: 'Some error occurs' });
+		}
+	}
+
 	// [GET] /courses/:id/edit
 	edit(req, res, next) {
 		console.log(req.params.id + ' david');
@@ -66,7 +80,7 @@ class CourseController {
 	// [DELETE] /courses/:id/hard
 	hardDestroy(req, res, next) {
 		console.log('hard delete');
-		Course.deleteOne({_id:req.params.id}).then(() => res.redirect(`back`));
+		Course.deleteOne({ _id: req.params.id }).then(() => res.redirect(`back`));
 	}
 }
 export default new CourseController();
