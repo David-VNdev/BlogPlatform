@@ -12,8 +12,6 @@ The application is built with
 - Bootstrap 4
 - JQuery
 
-<!-- Todo  -->
- fix the disabled
- do bulk action for restore
+
 
 
